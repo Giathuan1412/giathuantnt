@@ -2,7 +2,7 @@
 import os
 import time
 import database
-from file_reader import hash_file
+from Util.file_reader import hash_file
 
 
 def run_benchmark(paths, runs=3, progress=None):

@@ -8,10 +8,10 @@ import time
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 
-import benchmark
-import database
-import monitor
-from file_reader import hash_file
+import Core.benchmark
+import Core.database
+import Core.monitor
+from Util.file_reader import hash_file
 
 STATUS_COLOR = {"OK": "#2e7d32", "MODIFIED": "#c62828", "MISSING": "#ef6c00", "ERROR": "#607d8b"}
 STATUS_TEXT = {"OK": "Nguyên vẹn", "MODIFIED": "Đã bị thay đổi",
@@ -135,7 +135,7 @@ class App(tk.Tk):
             self.result_var.set(h)
             self.info_var.set("Thời gian: %.1f ms    Kích thước: %s" % (ms, fmt_size(size)))
             if register:
-                if database.add_file(os.path.abspath(path), algo, h, size):
+                if Core.database.add_file(os.path.abspath(path), algo, h, size):
                     messagebox.showinfo("Thành công", "Đã đăng ký giám sát tập tin.")
                     self.refresh_files()
                 else:
@@ -167,7 +167,7 @@ class App(tk.Tk):
                 h, err = hash_file(p, algo)
                 if err:
                     bad += 1
-                elif database.add_file(os.path.abspath(p), algo, h, os.path.getsize(p)):
+                elif Core.database.add_file(os.path.abspath(p), algo, h, os.path.getsize(p)):
                     added += 1
                 else:
                     dup += 1
@@ -198,7 +198,7 @@ class App(tk.Tk):
         ids = self._selected_ids(self.tree_list)
         if ids and messagebox.askyesno("Xác nhận", "Xóa %d mục khỏi danh sách giám sát?" % len(ids)):
             for i in ids:
-                database.delete_file(i)
+                Core.database.delete_file(i)
             self.refresh_files()
 
     def update_selected(self):
@@ -208,14 +208,14 @@ class App(tk.Tk):
             return
         if not messagebox.askyesno("Xác nhận", "Dùng hash hiện tại của tập tin làm giá trị chuẩn mới?"):
             return
-        recs = {r[0]: r for r in database.get_all_files()}
+        recs = {r[0]: r for r in Core.database.get_all_files()}
 
         def work(_):
             ok = 0
             for i in ids:
                 h, err = hash_file(recs[i][1], recs[i][2])
                 if not err:
-                    database.update_hash(i, h, os.path.getsize(recs[i][1]))
+                    Core.database.update_hash(i, h, os.path.getsize(recs[i][1]))
                     self.last_status[i] = "OK"
                     ok += 1
             return ok
@@ -226,7 +226,7 @@ class App(tk.Tk):
         self.run_bg(work, done)
 
     def refresh_files(self):
-        self.records = database.get_all_files()
+        self.records = Core.database.get_all_files()
         for t in (self.tree_list, self.tree_check):
             t.delete(*t.get_children())
         for r in self.records:
@@ -266,7 +266,7 @@ class App(tk.Tk):
         self.progress.configure(maximum=len(recs), value=0)
 
         def work(prog):
-            return monitor.check_all(recs, prog)
+            return Core.monitor.check_all(recs, prog)
 
         def prog(a, b):
             self.progress.configure(value=a)
@@ -317,7 +317,7 @@ class App(tk.Tk):
 
     def load_history(self):
         self.tree_hist.delete(*self.tree_hist.get_children())
-        self.hist_rows = database.get_history(self.filter_var.get())
+        self.hist_rows = Core.database.get_history(self.filter_var.get())
         for r in self.hist_rows:
             self.tree_hist.insert("", "end", values=r)
 
@@ -367,7 +367,7 @@ class App(tk.Tk):
         runs = max(3, int(self.runs_var.get()))
         files = list(self.bench_files)
         self.bench_label.set("Đang đo...")
-        self.run_bg(lambda prog: benchmark.run_benchmark(files, runs),
+        self.run_bg(lambda prog: Core.benchmark.run_benchmark(files, runs),
                     self.show_bench)
 
     def show_bench(self, res):

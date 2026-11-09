@@ -1,7 +1,7 @@
 """Kiểm thử đổi bit: python test_bitflip.py"""
 import os, tempfile
-import bitflip, database, monitor
-from file_reader import hash_file
+import Util.bitflip as bitflip, Data.database as database, Core.monitor as monitor
+from Util.file_reader import hash_file
 
 database.DB_PATH = os.path.join(tempfile.mkdtemp(), "t.db")
 database.init_db()

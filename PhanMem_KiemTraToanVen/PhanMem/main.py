@@ -1,6 +1,6 @@
 """Khởi chạy ứng dụng: python main.py"""
-import database
-from gui import App
+import Data.database as database
+from GUI.gui import App
 
 if __name__ == "__main__":
     database.init_db()

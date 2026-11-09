@@ -1,7 +1,7 @@
 """Đọc tập tin theo từng khối và đưa cho bộ băm."""
 import os
-from sha1_impl import SHA1
-from sha512_impl import SHA512
+from Core.sha1_impl import SHA1
+from Core.sha512_impl import SHA512
 
 CHUNK = 64 * 1024  # 64 KB, là bội số của 64 và 128 byte
 ALGOS = {"SHA-1": SHA1, "SHA-512": SHA512}

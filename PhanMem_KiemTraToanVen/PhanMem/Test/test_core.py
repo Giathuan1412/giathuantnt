@@ -1,8 +1,8 @@
 import hashlib, os, tempfile, random
-from sha1_impl import SHA1
-from sha512_impl import SHA512
-import database, monitor, benchmark
-from file_reader import hash_file
+from Core.sha1_impl import SHA1
+from Core.sha512_impl import SHA512
+import Data.database as database, Core.monitor as monitor, Util.benchmark as benchmark
+from Util.file_reader import hash_file
 
 random.seed(1)
 for n in [0,1,3,55,56,63,64,65,111,112,119,127,128,129,200,1000,70000]:

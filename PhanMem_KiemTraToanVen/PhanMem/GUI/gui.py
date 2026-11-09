@@ -8,11 +8,11 @@ import time
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 
-import benchmark
-import bitflip
-import database
-import monitor
-from file_reader import hash_file
+import Util.benchmark as benchmark
+import Util.bitflip as bitflip
+import Data.database as database
+import Core.monitor as monitor
+from Util.file_reader import hash_file
 
 STATUS_COLOR = {"OK": "#2e7d32", "MODIFIED": "#c62828", "MISSING": "#ef6c00", "ERROR": "#607d8b"}
 STATUS_TEXT = {"OK": "Nguyên vẹn", "MODIFIED": "Đã bị thay đổi",

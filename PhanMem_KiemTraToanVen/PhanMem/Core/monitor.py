@@ -1,7 +1,7 @@
 """So sánh hash và xác định trạng thái: OK, MODIFIED, MISSING, ERROR."""
 import os
-import database
-from file_reader import hash_file
+import Data.database as database
+from Util.file_reader import hash_file
 
 
 def check_one(rec):

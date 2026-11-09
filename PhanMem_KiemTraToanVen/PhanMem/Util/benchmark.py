@@ -1,8 +1,8 @@
 """Đo thời gian chạy SHA-1 và SHA-512."""
 import os
 import time
-import database
-from file_reader import hash_file
+import Data.database as database
+from Util.file_reader import hash_file
 
 
 def run_benchmark(paths, runs=3, progress=None):
